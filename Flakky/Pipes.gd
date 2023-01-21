@@ -12,10 +12,18 @@ onready var bottom = $"Bottom"
 onready var top = $"Top"
 onready var score = $"Score"
 
-var velocity = -2.0
+export var velocity = -3.0
+export var offset = 0
 
-# Called when the node enters the scene tree for the first time.
+func set_offset(offset):
+	print("set offset")
+	self.offset = offset
+
 func _ready():
+	print("ready")
+	bottom.position += Vector2(0, offset)
+	top.position += Vector2(0, offset)
+	score.position += Vector2(0, offset)
 	pass # Replace with function body.
 	
 
@@ -27,10 +35,14 @@ func _process(delta):
 func _on_Bottom_body_entered(body):
 	emit_signal("pipe_hit")
 
-
 func _on_Top_body_entered(body):
 	emit_signal("pipe_hit")
 
 
 func _on_Score_body_exited(body):
 	emit_signal("score")
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	print("destroy")
+	queue_free()
